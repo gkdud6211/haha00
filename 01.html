@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/reset.css" />
+    <script src="../js/jquery.js"></script>
+    <style>
+        #visual{width:100%; height:500px;position: relative;
+        margin: auto;}
+        
+        #visual .banner{}
+        #visual .banner li{position: absolute;
+        right: 0;top: 0;width: 100%;height: 500px;
+        background-repeat: no-repeat ;
+        background-position: 0 0;
+        background-size:cover;
+        }
+        
+        #visual .banner li:nth-child(1){ background-image: url(../images/main0.jpg);
+        }
+        #visual .banner li:nth-child(2){ background-image: url(../images/main1.jpg);
+        }
+        #visual .banner li:nth-child(3){
+            background-image: url(../images/main2.jpg);
+        }
+        #visual .banner li:nth-child(4){
+            background-image: url(../images/main3.jpg);
+        }
+        
+        #visual .listbanner {position: absolute;
+        left: 50%;bottom: 20px;}
+        #visual .listbanner li{float: left;margin: 10px;
+        width: 20px;height: 20px;background: red;
+        }
+        #visual .listbanner li.on{
+            background: skyblue;
+        }
+        
+        #visual .btnbox{}
+        #visual .btnbox a{display: block;width: 150px;height: 60px;
+        font-size: 18px;line-height: 60px;text-align: center;
+        background: yellow;color:#000}
+        #visual .btnbox .btn{    position: absolute;top: 45%;    }
+        #visual .btnbox .prev{    left: 50px;    }
+        #visual .btnbox .next{    right: 50px;    }
+        
+    </style>
+    <script>
+        $(function(){
+        //////////////////////
+        
+        var current=0; //현재값
+        var old=0; //이미실행한 값을 담는 과거값
+        var timer=0 ,delay=3000;
+        
+        timer=setInterval(make, delay);
+        function make(){
+        	current++
+        	if(current>3){cnrrent=0}
+        	current=current%4 //나머지값ㅇ,ㅓ ㄷ
+        	banner()
+        	
+        }
+      $('#visual .banner li').css('left','-100%')
+      $('#visual .banner li').eq(current).css('left','0px')
+      $('#visual .listbanner li').on('click',function(e){
+      	current=$(this).index();
+      	banner()
+        clearInterval(timer) //시간해지
+        timer=setInterval(make,delay);//다시 3초단위
+      });
+      $('#visual .prev').on('click',function(e){
+      	current--
+      	if(current<0){cnt=3}
+      	banner1()
+      	 clearInterval(timer)
+        timer=setInterval(make,delay);
+      });
+      $('#visual .next').on('click',function(e){
+      	current++
+      	current=current%4
+      	banner()
+      	 clearInterval(timer) 
+        timer=setInterval(make,delay);
+      });
+      
+    function banner(){
+    	if(old!=current){//과거와 현재가 다르면 처리해라(li같은거 두번누르면 움직이는거 방지)
+    	$('#visual .banner li').eq(current).stop().css('left','-100%').animate({left:0},400)
+    	
+    	$('#visual .banner li').eq(old).stop().css('left','0').animate({left:'100%'},400)
+    	$('#visual .listbanner li').removeClass('on')
+    	$('#visual .listbanner li').eq(current).addClass('on')
+    	
+    	old=current; //이미 일끝난 현재는 과거값을 담기
+    	}
+    }
+    function banner1(){
+    	if(old!=current){
+    	$('#visual .banner li').eq(current).stop().css('left','100%').animate({left:0},400)
+    	
+    	$('#visual .banner li').eq(old).stop().css('left','0').animate({left:'-100%'},400)
+    	
+    	$('#visual .listbanner li').removeClass('on')
+    	$('#visual .listbanner li').eq(current).addClass('on')
+    	
+    	old=current;
+    	}
+    }
+    
+    
+        /////////////////////    
+        })
+    </script>
+</head>
+<body>
+
+   <section id="visual">
+       <ul class="banner">
+           <li></li>
+           <li></li>
+           <li></li>
+           <li></li>
+       </ul>
+       <ul class="listbanner">
+           <li class="on"></li>
+           <li></li>
+           <li></li>
+           <li></li>
+       </ul>
+       
+       <ul class="btnbox">
+           <li class="btn prev"><a href="#">prev</a></li>
+           <li class="btn next"><a href="#">next</a></li>
+       </ul>
+       
+   </section>
+
+   <pre>
+       1. 상품 li -> 배경처리 
+          총장수 여러장 겹침 
+          
+       2. 첫번째 사진만 보이기 -> 나머지는 모두 앞쪽으로 이동시키기    
+       
+       3. 첫번째 사진은 밖으로 부드럽게( 오쪽으로 )
+          두번재 사진은 안으로 (화면으로 - 왼쪽으로 )
+   </pre>
+
+
+
+
+       
+</body>
+</html>
+
